@@ -10,14 +10,14 @@ function App() {
 
   return (
     <>
-      <header>
-        <Sidebar />
-      </header>
-      <main>
-        <section>
+      <main className="flex overflow-hidden">
+        <aside className="w-1/5">
+          <Sidebar />
+        </aside>
+        <section className="w-2/5">
           <NoteEditor />
         </section>
-        <section>
+        <section className="w-2/5">
           <NotePreview />
         </section>
       </main>
