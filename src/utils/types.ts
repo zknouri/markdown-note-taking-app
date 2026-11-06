@@ -8,6 +8,7 @@ export interface Note {
 export interface SidebarProps {
   notesData: Note[];
   onSave: () => void;
+  onNewNoteClick: () => void;
   onNoteSelect: (id: string) => void;
 }
 

@@ -15,10 +15,14 @@ export default function NoteEditor({
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   function onEditClickHandler() {
+    if(selectedNote){
+      setDocTitle(selectedNote?.title);
+    }
     setIsEditing(true);
   }
 
   function onSaveClickHandler() {
+    setIsEditing(false);
     if (selectedNote) {
       onTitleChange(selectedNote.id, docTitle);
     }
@@ -34,7 +38,7 @@ export default function NoteEditor({
         {isEditing ? (
           <input
             type="text"
-            value={selectedNote ? selectedNote.title : docTitle}
+            value={docTitle}
             onChange={(event) => setDocTitle(event.target.value)}
             className="p-2 border border-stone-500 rounded-md"
           />

@@ -6,6 +6,10 @@ import Sidebar from "./components/Sidebar";
 import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
 
+// ///////////////////////////////
+// title persist after new note click
+/////////////////////////////////////
+
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNote, setSelectedNote] = useState<Note>();
@@ -13,6 +17,7 @@ function App() {
 
   function markdownChangeHandler(markd: string) {
     setMarkdown(markd);
+    setSelectedNote(undefined);
   }
 
   function noteSavingHandler() {
@@ -41,13 +46,18 @@ function App() {
     setMarkdown(note.content);
   }
 
+  function createNewNoteHandler(){
+    setSelectedNote(undefined);
+    setMarkdown('');
+  }
+
   console.log(notes);
 
   return (
     <>
       <main className="flex overflow-hidden">
         <aside className="relative w-1/5">
-          <Sidebar notesData={notes} onSave={noteSavingHandler} onNoteSelect={selectedNoteHandler}/>
+          <Sidebar notesData={notes} onSave={noteSavingHandler} onNoteSelect={selectedNoteHandler} onNewNoteClick={createNewNoteHandler}/>
         </aside>
         <section className="w-2/5">
           <NoteEditor
