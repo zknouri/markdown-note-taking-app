@@ -1,13 +1,23 @@
 export interface Note {
-    readonly id: string;
-    title: string;
-    content: string;
-    updatedAt: number;
+  readonly id: string;
+  title: string;
+  content: string;
+  updatedAt: Temporal.PlainDateTime;
+}
+
+export interface SidebarProps {
+  notesData: Note[];
+  onSave: () => void;
+  onNoteSelect: (id: string) => void;
 }
 
 export interface NoteEditorProps {
-    onTextChange: (text: string ) => void;
+  selectedNote: Note | undefined;
+  markdown: string;
+  onTitleChange: (id: string, newTitle: string) => void;
+  onMarkdownChange: (markdonw: string) => void;
 }
+
 export interface NotePreviewProps {
-    markd: string;
+  markdown: string;
 }
