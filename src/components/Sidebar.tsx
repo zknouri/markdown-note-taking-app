@@ -13,7 +13,10 @@ export default function Sidebar({
   return (
     <nav className="fixed bg-olive-500 h-lvh w-1/5 p-2">
       <div className="flex flex-col border-b border-b-cyan-900 mb-2">
-        <button onClick={onNewNoteClick} className="block bg-cyan-500 hover:bg-cyan-400 rounded-md p-2 mb-2 font-bold text-stone-600 cursor-pointer">
+        <button
+          onClick={onNewNoteClick}
+          className="block bg-cyan-500 hover:bg-cyan-400 rounded-md p-2 mb-2 font-bold text-stone-600 cursor-pointer"
+        >
           <div className="flex gap-1 justify-center items-center">
             <img src={createIcon} alt="" className="size-6" />
             <span>Create New Note</span>

@@ -6,25 +6,27 @@ import saveIcon from "../assets/svg/save-outline-icon.svg";
 import editIcon from "../assets/svg/pencil-icon.svg";
 
 export default function NoteEditor({
+  title,
   markdown,
   selectedNote,
-  onTitleChange,
+  isEditing,
+  onNoteTitleChange,
   onMarkdownChange,
+  onMarkdownTitleChange,
+  onEditTitleClick,
 }: NoteEditorProps) {
-  const [docTitle, setDocTitle] = useState<string>("");
-  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   function onEditClickHandler() {
-    if(selectedNote){
-      setDocTitle(selectedNote?.title);
+    if (selectedNote) {
+      onMarkdownTitleChange(selectedNote?.title);
     }
-    setIsEditing(true);
+    onEditTitleClick(true);
   }
 
   function onSaveClickHandler() {
-    setIsEditing(false);
+    onEditTitleClick(false);
     if (selectedNote) {
-      onTitleChange(selectedNote.id, docTitle);
+      onNoteTitleChange(selectedNote.id, title);
     }
   }
 
@@ -38,15 +40,15 @@ export default function NoteEditor({
         {isEditing ? (
           <input
             type="text"
-            value={docTitle}
-            onChange={(event) => setDocTitle(event.target.value)}
+            value={selectedNote ? selectedNote.title : title}
+            onChange={(event) => onMarkdownTitleChange(event.target.value)}
             className="p-2 border border-stone-500 rounded-md"
           />
         ) : (
           <input
             disabled
             type="text"
-            value={selectedNote ? selectedNote.title : docTitle}
+            value={selectedNote ? selectedNote.title : title}
             className="p-2 border border-stone-500 rounded-md"
           />
         )}

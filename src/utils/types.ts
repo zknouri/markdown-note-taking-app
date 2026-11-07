@@ -15,8 +15,12 @@ export interface SidebarProps {
 export interface NoteEditorProps {
   selectedNote: Note | undefined;
   markdown: string;
-  onTitleChange: (id: string, newTitle: string) => void;
+  title: string;
+  isEditing: boolean;
+  onNoteTitleChange: (id: string, newTitle: string) => void;
+  onMarkdownTitleChange: (title: string) => void;
   onMarkdownChange: (markdonw: string) => void;
+  onEditTitleClick: (value: boolean) => void;
 }
 
 export interface NotePreviewProps {
