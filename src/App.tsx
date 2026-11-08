@@ -7,7 +7,7 @@ import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
 
 // ///////////////////////////////
-// title change input is not working properly
+// title change text input is not working properly
 // 
 /////////////////////////////////////
 
@@ -47,6 +47,7 @@ function App() {
     const note: Note = notes.filter((note) => note.id === id)[0];
     setSelectedNote(note);
     setMarkdown(note.content);
+    setDocTitle(note.title);
   }
 
   function createNewNoteHandler(): void {

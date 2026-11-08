@@ -18,7 +18,7 @@ export default function NoteEditor({
 
   function onEditClickHandler() {
     if (selectedNote) {
-      onMarkdownTitleChange(selectedNote?.title);
+      onMarkdownTitleChange(title);
     }
     onEditTitleClick(true);
   }
@@ -40,7 +40,7 @@ export default function NoteEditor({
         {isEditing ? (
           <input
             type="text"
-            value={selectedNote ? selectedNote.title : title}
+            value={selectedNote && !isEditing ? selectedNote.title : title}
             onChange={(event) => onMarkdownTitleChange(event.target.value)}
             className="p-2 border border-stone-500 rounded-md"
           />
@@ -48,7 +48,7 @@ export default function NoteEditor({
           <input
             disabled
             type="text"
-            value={selectedNote ? selectedNote.title : title}
+            value={selectedNote && isEditing ? selectedNote.title : title}
             className="p-2 border border-stone-500 rounded-md"
           />
         )}
