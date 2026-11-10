@@ -7,8 +7,8 @@ import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
 
 // ///////////////////////////////
-// title change text input is not working properly
-// 
+// Documentation
+//
 /////////////////////////////////////
 
 function App() {
@@ -18,36 +18,8 @@ function App() {
   const [docTitle, setDocTitle] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  function markdownChangeHandler(markd: string): void {
-    setMarkdown(markd);
-    setSelectedNote(undefined);
-  }
-
-  function noteSavingHandler(): void {
-    // You mest check if the note already exists and modify it
-    setNotes((prevNotes) => [
-      ...prevNotes,
-      {
-        id: crypto.randomUUID(),
-        title: docTitle !== "" ? docTitle : "UntitledFile.md",
-        content: markdown,
-        updatedAt: Temporal.Now.plainDateTimeISO(),
-      },
-    ]);
-  }
-
-  function titleChangeHandler(id: string, newTitle: string): void {
-    const updatedNotes = notes.map((note) =>
-      note.id === id ? { ...note, title: newTitle } : note,
-    );
-    setNotes(updatedNotes);
-  }
-
-  function selectedNoteHandler(id: string): void {
-    const note: Note = notes.filter((note) => note.id === id)[0];
-    setSelectedNote(note);
-    setMarkdown(note.content);
-    setDocTitle(note.title);
+  {
+    /* ------ Sidebar-start ------ */
   }
 
   function createNewNoteHandler(): void {
@@ -57,12 +29,62 @@ function App() {
     setIsEditing(false);
   }
 
+  function selectedNoteHandler(id: string): void {
+    const note: Note = notes.filter((note) => note.id === id)[0];
+    setSelectedNote(note);
+    setMarkdown(note.content);
+    setDocTitle(note.title);
+  }
+
+  function noteSavingHandler(id: string | undefined): void {
+    // You must check if the note already exists and modify it
+    if (!id) {
+      setNotes((prevNotes) => [
+        ...prevNotes,
+        {
+          id: crypto.randomUUID(),
+          title: docTitle !== "" ? docTitle : "UntitledFile.md",
+          content: markdown,
+          updatedAt: Temporal.Now.plainDateTimeISO(),
+        },
+      ]);
+    } else {
+      const updatedNotes = notes.map((note) =>
+        note.id === id ? { ...note, content: markdown } : note,
+      );
+      setNotes(updatedNotes);
+    }
+  }
+
+  {
+    /* ------ Sidebar-end ------ */
+  }
+
+  {
+    /* ------ NoteEditor-start ------ */
+  }
+
+  function markdownChangeHandler(markd: string): void {
+    setMarkdown(markd);
+  }
+
+  function titleChangeHandler(id: string, newTitle: string): void {
+    const updatedNotes = notes.map((note) =>
+      note.id === id ? { ...note, title: newTitle } : note,
+    );
+    setNotes(updatedNotes);
+  }
+
   function markdownTitleChangeHandler(title: string): void {
     setDocTitle(title);
   }
 
-  function setIsEditingHandler(value: boolean){
+  function setIsEditingHandler(value: boolean) {
     setIsEditing(value);
+  }
+
+  {
+    /* ------ NoteEditor-end ------ */
   }
 
   console.log(notes);
@@ -73,6 +95,7 @@ function App() {
         <aside className="relative w-1/5">
           <Sidebar
             notesData={notes}
+            selectedNote={selectedNote}
             onSave={noteSavingHandler}
             onNoteSelect={selectedNoteHandler}
             onNewNoteClick={createNewNoteHandler}
