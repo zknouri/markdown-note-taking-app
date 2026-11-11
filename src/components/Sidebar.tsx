@@ -3,6 +3,7 @@ import type { SidebarProps } from "../utils/types";
 import saveIcon from "../assets/svg/save-outline-icon.svg";
 import deleteIcon from "../assets/svg/recycle-bin-line-icon.svg";
 import createIcon from "../assets/svg/text-document-add-icon.svg";
+import { useState } from "react";
 
 export default function Sidebar({
   notesData,
@@ -11,8 +12,8 @@ export default function Sidebar({
   onNoteSelect,
   onNewNoteClick,
 }: SidebarProps) {
+  const [searchQuery, setSearchQueary] = useState<string>('');
 
-  console.log(selectedNote);
   return (
     <nav className="fixed bg-olive-500 h-lvh w-1/5 p-2">
       <div className="flex flex-col border-b border-b-cyan-900 mb-2">
@@ -43,6 +44,8 @@ export default function Sidebar({
       </div>
 
       <input
+        value={searchQuery}
+        onChange={(event) => setSearchQueary(event.target.value)}
         type="text"
         className="bg-white w-full p-0.5 h-10 rounded-md text-center text-xl"
         placeholder="Search"
@@ -50,15 +53,15 @@ export default function Sidebar({
       <div>
         <ul className="mt-4">
           {notesData.length > 0
-            ? notesData.map((note) => (
+            ? notesData.map((note) => note.title.toLowerCase().includes(searchQuery.toLowerCase()) ? (
                 <li
                   onClick={() => onNoteSelect(note.id)}
                   key={note.id}
-                  className="mt-2 bg-olive-400 hover:bg-olive-300 p-2 rounded-md font-bold text-lg cursor-pointer"
+                  className={`mt-2 ${note.id === selectedNote?.id ? 'bg-olive-300' : 'bg-olive-400'}  hover:bg-olive-200 p-2 rounded-md font-bold text-lg cursor-pointer`}
                 >
                   {note.title}
                 </li>
-              ))
+              ) : null)
             : null}
         </ul>
       </div>

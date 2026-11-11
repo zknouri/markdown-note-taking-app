@@ -37,7 +37,6 @@ function App() {
   }
 
   function noteSavingHandler(id: string | undefined): void {
-    // You must check if the note already exists and modify it
     if (!id) {
       setNotes((prevNotes) => [
         ...prevNotes,
@@ -54,6 +53,10 @@ function App() {
       );
       setNotes(updatedNotes);
     }
+  }
+
+  function notesSearchHandler(query: string){
+    
   }
 
   {
