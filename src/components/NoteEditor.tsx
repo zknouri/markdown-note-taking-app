@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import type { NoteEditorProps } from "../utils/types";
 
 import saveIcon from "../assets/svg/save-outline-icon.svg";
@@ -16,6 +14,9 @@ export default function NoteEditor({
   onEditTitleClick,
 }: NoteEditorProps) {
 
+  // Title Edit - Button
+  // Sets selected Note title to text input
+  // Enables title text input
   function onEditClickHandler() {
     if (selectedNote) {
       onMarkdownTitleChange(title);
@@ -23,6 +24,9 @@ export default function NoteEditor({
     onEditTitleClick(true);
   }
 
+  // Title Save - Button
+  // Disables tilte text input
+  // Sends the new Title to be saved in the Notes Data
   function onSaveClickHandler() {
     onEditTitleClick(false);
     if (selectedNote) {
@@ -30,6 +34,8 @@ export default function NoteEditor({
     }
   }
 
+  // Makdown Editing - Textarea
+  // Sets markdown change
   function markdownEditingHandler(value: string) {
     onMarkdownChange(value);
   }

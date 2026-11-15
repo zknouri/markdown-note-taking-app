@@ -6,29 +6,34 @@ import Sidebar from "./components/Sidebar";
 import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
 
-// ///////////////////////////////
-// Documentation
-//
-/////////////////////////////////////
-
 function App() {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [selectedNote, setSelectedNote] = useState<Note>();
-  const [markdown, setMarkdown] = useState<string>("");
-  const [docTitle, setDocTitle] = useState<string>("");
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [notes, setNotes] = useState<Note[]>([]); // Notes Data
+  const [selectedNote, setSelectedNote] = useState<Note>(); // User selected Note to edit or preview
+  const [markdown, setMarkdown] = useState<string>(""); // Markdown change
+  const [docTitle, setDocTitle] = useState<string>(""); // Marikdown title change
+  const [isEditing, setIsEditing] = useState<boolean>(false); // Title text input
 
   {
     /* ------ Sidebar-start ------ */
   }
 
+  // Create New Note - Button
+  // Prop: onNewNoteClick()
+  // - Clears markdown
+  // - Clears title and title editing
+  // - Clears if there is a selected Note
   function createNewNoteHandler(): void {
     setSelectedNote(undefined);
     setMarkdown("");
     setDocTitle("");
-    setIsEditing(false);
+    setIsEditing(false); // Title editing
   }
 
+  // Selects a Note to read it - List
+  // Prop: onNoteSelect()
+  // Filters the selected Note from Notes data
+  // Sets the selected Note
+  // Sets the Note markdown and title in the NoteEditor
   function selectedNoteHandler(id: string): void {
     const note: Note = notes.filter((note) => note.id === id)[0];
     setSelectedNote(note);
@@ -36,6 +41,10 @@ function App() {
     setDocTitle(note.title);
   }
 
+  // Session Save - Button
+  // Prop: onSave()
+  // Save if the Note in New
+  // Updates if there is a selected Note
   function noteSavingHandler(id: string | undefined): void {
     if (!id) {
       setNotes((prevNotes) => [
@@ -55,10 +64,6 @@ function App() {
     }
   }
 
-  function notesSearchHandler(query: string){
-    
-  }
-
   {
     /* ------ Sidebar-end ------ */
   }
@@ -67,22 +72,36 @@ function App() {
     /* ------ NoteEditor-start ------ */
   }
 
+  // Markdown Editing - Textarea
+  // Prop: onMarkdownChange()
+  // Sets markdown change
   function markdownChangeHandler(markd: string): void {
     setMarkdown(markd);
   }
 
-  function titleChangeHandler(id: string, newTitle: string): void {
+  // Note Title Update - Text Input
+  // Prop: onNoteTitleChange()
+  // Updates selected Note title
+  // Sets Updated Notes
+  function noteTitleChangeHandler(id: string, newTitle: string): void {
     const updatedNotes = notes.map((note) =>
       note.id === id ? { ...note, title: newTitle } : note,
     );
     setNotes(updatedNotes);
   }
 
+  // New markdown title change - Text Input
+  // Prop: onMarkdownTitleChange()
+  // Sets new markdown title
   function markdownTitleChangeHandler(title: string): void {
     setDocTitle(title);
   }
 
-  function setIsEditingHandler(value: boolean) {
+  // Enable/Disable title text input
+  // Prop: onEditTitleClick()
+  // true: Enables text input, save button and disables edit button
+  // false: Disables text input, save button and enables edit button
+  function setIsEditingHandler(value: boolean): void {
     setIsEditing(value);
   }
 
@@ -97,8 +116,8 @@ function App() {
       <main className="flex overflow-hidden">
         <aside className="relative w-1/5">
           <Sidebar
-            notesData={notes}
-            selectedNote={selectedNote}
+            notesData={notes} // Notes List
+            selectedNote={selectedNote} // Note Update(onSave()) and selected note marking
             onSave={noteSavingHandler}
             onNoteSelect={selectedNoteHandler}
             onNewNoteClick={createNewNoteHandler}
@@ -106,18 +125,19 @@ function App() {
         </aside>
         <section className="w-2/5">
           <NoteEditor
-            onNoteTitleChange={titleChangeHandler}
+            onNoteTitleChange={noteTitleChangeHandler}
             onMarkdownChange={markdownChangeHandler}
             onMarkdownTitleChange={markdownTitleChangeHandler}
             onEditTitleClick={setIsEditingHandler}
-            selectedNote={selectedNote}
-            markdown={markdown}
-            title={docTitle}
-            isEditing={isEditing}
+            selectedNote={selectedNote} // Show selected note
+            markdown={markdown} // Markdown change before saving
+            title={docTitle} // Title change before saving
+            isEditing={isEditing} // Enable/Disable Title text input and Save/Edit buttons
           />
         </section>
         <section className="w-2/5">
-          <NotePreview markdown={markdown} />
+          <NotePreview markdown={markdown} // Markdown to HTML preview
+           />
         </section>
       </main>
     </>

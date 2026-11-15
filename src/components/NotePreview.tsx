@@ -7,6 +7,13 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import type { NotePreviewProps } from "../utils/types";
 
+// MakdownHooks: Component to render markdown with support for async plugins through hooks(works with rehype-starry-night).
+// remarkGfm: remark plugin to support GFM (autolink literals, footnotes, strikethrough, tables, tasklists).
+// remarkMath: remark plugin to support a math syntax in markdown.
+// rehypeRaw: rehype plugin to to support HTML embedded inside markdown.
+// rehypeKatex: rehype plugin to render math in HTML with KaTeX(KaTex Css is important).
+// rehypeStarryNight: rehype plugin to apply syntax highlighting to code with starry-night.
+
 export default function NotePreview({ markdown }: NotePreviewProps) {
   return (
     <div className="prose-base prose-a:text-sky-500 prose-a:hover:text-sky-600 prose-a:underline prose-h1:pb-2 prose-h1:font-bold prose-h1:border-b prose-h1:border-b-stone-400 prose-h2:pb-1 prose-h2:font-bold prose-h2:border-b prose-h2:border-b-stone-300 prose-code:bg-stone-200 prose-code:rounded-sm prose-pre:bg-stone-200 prose-ul:list-disc prose-ol:list-decimal prose-table:text-center prose-table:table-auto prose-thead:bg-stone-200 prose-tr:even:bg-stone-200 prose-th:p-2 prose-th:border prose-th:border-stone-300 prose-td:p-2 prose-td:border prose-td:border-stone-300 prose-blockquote:border-l-5 prose-blockquote:border-l-stone-300 w-full h-lvh bg-stone-100 p-2 overflow-x-hidden overflow-y-scroll">

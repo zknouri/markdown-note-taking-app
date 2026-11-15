@@ -12,7 +12,7 @@ export default function Sidebar({
   onNoteSelect,
   onNewNoteClick,
 }: SidebarProps) {
-  const [searchQuery, setSearchQueary] = useState<string>('');
+  const [searchQuery, setSearchQueary] = useState<string>(''); // Notes Search
 
   return (
     <nav className="fixed bg-olive-500 h-lvh w-1/5 p-2">
