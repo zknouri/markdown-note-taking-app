@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import type { Note } from "./utils/types";
 
 import Sidebar from "./components/Sidebar";
 import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
+import debounce from "./lib/debounce";
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([]); // Notes Data
@@ -74,10 +75,14 @@ function App() {
 
   // Markdown Editing - Textarea
   // Prop: onMarkdownChange()
-  // Sets markdown change
-  function markdownChangeHandler(markd: string): void {
-    setMarkdown(markd);
-  }
+  // Handles the app markdown change
+  // Debouncing preview while waiting for user input
+  const markdownChangeHandler = useCallback(
+    debounce((markd: string): void => {
+      (setMarkdown(markd));
+    }, 300),
+    [],
+  );
 
   // Note Title Update - Text Input
   // Prop: onNoteTitleChange()
@@ -136,8 +141,9 @@ function App() {
           />
         </section>
         <section className="w-2/5">
-          <NotePreview markdown={markdown} // Markdown to HTML preview
-           />
+          <NotePreview
+            markdown={markdown} // Markdown to HTML preview
+          />
         </section>
       </main>
     </>

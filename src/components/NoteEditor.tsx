@@ -2,6 +2,7 @@ import type { NoteEditorProps } from "../utils/types";
 
 import saveIcon from "../assets/svg/save-outline-icon.svg";
 import editIcon from "../assets/svg/pencil-icon.svg";
+import { useEffect, useState } from "react";
 
 export default function NoteEditor({
   title,
@@ -13,6 +14,12 @@ export default function NoteEditor({
   onMarkdownTitleChange,
   onEditTitleClick,
 }: NoteEditorProps) {
+  const [markdownInput, setMarkdownInput] = useState<string>(markdown); // For markdown input change 
+
+  useEffect(() => {
+    // Updates input state when editing a selected markdown
+    setMarkdownInput(markdown); 
+  }, [markdown]);
 
   // Title Edit - Button
   // Sets selected Note title to text input
@@ -35,9 +42,11 @@ export default function NoteEditor({
   }
 
   // Makdown Editing - Textarea
-  // Sets markdown change
+  // Handles input change on Editor side
+  // Handles the app markdown change(debouncing preview)
   function markdownEditingHandler(value: string) {
-    onMarkdownChange(value);
+    setMarkdownInput(value); // editor
+    onMarkdownChange(value); // app
   }
 
   return (
@@ -97,7 +106,7 @@ export default function NoteEditor({
         onChange={(event) => {
           markdownEditingHandler(event.target.value);
         }}
-        value={selectedNote ? selectedNote.content : markdown}
+        value={markdownInput}
         name="markdown"
         autoFocus
         className="w-full h-[95%] p-2 m-0 resize-none outline-0 border-0 overflow-x-hidden overflow-y-scroll"

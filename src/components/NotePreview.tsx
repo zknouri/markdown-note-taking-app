@@ -11,7 +11,7 @@ import type { NotePreviewProps } from "../utils/types";
 // remarkGfm: remark plugin to support GFM (autolink literals, footnotes, strikethrough, tables, tasklists).
 // remarkMath: remark plugin to support a math syntax in markdown.
 // rehypeRaw: rehype plugin to to support HTML embedded inside markdown.
-// rehypeKatex: rehype plugin to render math in HTML with KaTeX(KaTex Css is important).
+// rehypeKatex: rehype plugin to render math in HTML with KaTeX(CSS: @import 'katex/dist/katex.min.css').
 // rehypeStarryNight: rehype plugin to apply syntax highlighting to code with starry-night.
 
 export default function NotePreview({ markdown }: NotePreviewProps) {
