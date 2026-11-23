@@ -10,6 +10,7 @@ export default function Sidebar({
   notesData,
   selectedNote,
   onSave,
+  onDelete,
   onNoteSelect,
   onNewNoteClick,
 }: SidebarProps) {
@@ -49,7 +50,11 @@ export default function Sidebar({
             <span>Save Session</span>
           </div>
         </button>
-        <button className="block bg-red-500 hover:bg-red-400 rounded-md p-2 mb-2 font-bold text-stone-600 cursor-pointer">
+        <button
+          disabled={selectedNote ? false : true}
+          onClick={() => onDelete(selectedNote?.id)}
+          className={`block hover:bg-red-400 rounded-md p-2 mb-2 font-bold text-stone-600  ${selectedNote ? "bg-red-500 cursor-pointer" : "bg-red-400"}`}
+        >
           <div className="flex gap-1 justify-center items-center">
             <img src={deleteIcon} alt="" className="size-6" />
             <span>Delete Document</span>

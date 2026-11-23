@@ -7,6 +7,9 @@ import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
 import debounce from "./lib/debounce";
 
+// Local storage
+// Delete Note
+
 function App() {
   const [notes, setNotes] = useState<Note[]>([]); // Notes Data
   const [selectedNote, setSelectedNote] = useState<Note>(); // User selected Note to edit or preview
@@ -65,6 +68,19 @@ function App() {
     }
   }
 
+  // Delete Document - Button
+  // Prop: onDelete()
+  // Delete the current selected Note
+  // Update Notes state
+  // Create a new Note
+  function noteDeleteHandler(id: string | undefined): void {
+    if (id) {
+      const updatedNotes = notes.filter((note) => note.id !== id);
+      setNotes(updatedNotes);
+      createNewNoteHandler()
+    }
+  }
+
   {
     /* ------ Sidebar-end ------ */
   }
@@ -79,7 +95,7 @@ function App() {
   // Debouncing preview while waiting for user input
   const markdownChangeHandler = useCallback(
     debounce((markd: string): void => {
-      (setMarkdown(markd));
+      setMarkdown(markd);
     }, 300),
     [],
   );
@@ -124,6 +140,7 @@ function App() {
             notesData={notes} // Notes List
             selectedNote={selectedNote} // Note Update(onSave()) and selected note marking
             onSave={noteSavingHandler}
+            onDelete={noteDeleteHandler}
             onNoteSelect={selectedNoteHandler}
             onNewNoteClick={createNewNoteHandler}
           />
