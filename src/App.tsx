@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import type { Note } from "./utils/types";
 
@@ -7,15 +7,20 @@ import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
 import debounce from "./lib/debounce";
 
-// Local storage
-// Delete Note
-
 function App() {
   const [notes, setNotes] = useState<Note[]>([]); // Notes Data
   const [selectedNote, setSelectedNote] = useState<Note>(); // User selected Note to edit or preview
   const [markdown, setMarkdown] = useState<string>(""); // Markdown change
   const [docTitle, setDocTitle] = useState<string>(""); // Marikdown title change
   const [isEditing, setIsEditing] = useState<boolean>(false); // Title text input
+
+  // Load saved notes from localStorage
+  useEffect(() => {
+    const notesData: string | null = localStorage.getItem('notes')
+    if(notesData){
+      setNotes(JSON.parse(notesData));
+    }
+  }, []);
 
   {
     /* ------ Sidebar-start ------ */
@@ -47,24 +52,27 @@ function App() {
 
   // Session Save - Button
   // Prop: onSave()
-  // Save if the Note in New
-  // Updates if there is a selected Note
+  // Save if the Note in new
+  // Update if there is a selected Note
+  // Update local storage
   function noteSavingHandler(id: string | undefined): void {
     if (!id) {
-      setNotes((prevNotes) => [
-        ...prevNotes,
-        {
-          id: crypto.randomUUID(),
-          title: docTitle !== "" ? docTitle : "UntitledFile.md",
-          content: markdown,
-          updatedAt: Temporal.Now.plainDateTimeISO(),
-        },
-      ]);
+      const newNote: Note = {
+        id: crypto.randomUUID(),
+        title: docTitle !== "" ? docTitle : "UntitledFile.md",
+        content: markdown,
+        updatedAt: Temporal.Now.plainDateTimeISO(),
+      };
+
+      setNotes((prevNotes) => [...prevNotes, newNote]);
+
+      localStorage.setItem("notes", JSON.stringify([...notes, newNote]));
     } else {
       const updatedNotes = notes.map((note) =>
         note.id === id ? { ...note, content: markdown } : note,
       );
       setNotes(updatedNotes);
+      localStorage.setItem("notes", JSON.stringify(updatedNotes));
     }
   }
 
@@ -73,11 +81,13 @@ function App() {
   // Delete the current selected Note
   // Update Notes state
   // Create a new Note
+  // Update local storage
   function noteDeleteHandler(id: string | undefined): void {
     if (id) {
       const updatedNotes = notes.filter((note) => note.id !== id);
       setNotes(updatedNotes);
-      createNewNoteHandler()
+      createNewNoteHandler();
+      localStorage.setItem("notes", JSON.stringify(updatedNotes));
     }
   }
 
