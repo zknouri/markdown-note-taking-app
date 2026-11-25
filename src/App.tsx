@@ -7,6 +7,9 @@ import NoteEditor from "./components/NoteEditor";
 import NotePreview from "./components/NotePreview";
 import debounce from "./lib/debounce";
 
+// import/export md files
+// UI documentation
+
 function App() {
   const [notes, setNotes] = useState<Note[]>([]); // Notes Data
   const [selectedNote, setSelectedNote] = useState<Note>(); // User selected Note to edit or preview
@@ -16,8 +19,8 @@ function App() {
 
   // Load saved notes from localStorage
   useEffect(() => {
-    const notesData: string | null = localStorage.getItem('notes')
-    if(notesData){
+    const notesData: string | null = localStorage.getItem("notes");
+    if (notesData) {
       setNotes(JSON.parse(notesData));
     }
   }, []);
@@ -53,7 +56,7 @@ function App() {
   // Session Save - Button
   // Prop: onSave()
   // Save if the Note in new
-  // Update if there is a selected Note
+  // Update content and date if there is a selected Note
   // Update local storage
   function noteSavingHandler(id: string | undefined): void {
     if (!id) {
@@ -69,7 +72,13 @@ function App() {
       localStorage.setItem("notes", JSON.stringify([...notes, newNote]));
     } else {
       const updatedNotes = notes.map((note) =>
-        note.id === id ? { ...note, content: markdown } : note,
+        note.id === id
+          ? {
+              ...note,
+              content: markdown,
+              updatedAt: Temporal.Now.plainDateTimeISO(),
+            }
+          : note,
       );
       setNotes(updatedNotes);
       localStorage.setItem("notes", JSON.stringify(updatedNotes));
